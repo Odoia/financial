@@ -13,15 +13,14 @@ describe :Trade do
           trade_type = 0
           account_id = Faker::Number.number(digits: 10)
           symbol = Faker::String.random(length: 4)
-          shades = Faker::Number.number(digits: 2)
+          shares = Faker::Number.number(digits: 2)
           price = Faker::Number.number(digits: 3)
           state = 1
           timestamp = Faker::Number.number(digits: 5)
           valid_trade = Trade.new(
-            trade_type: trade_type, account_id: account_id, symbol: symbol, shades: shades,
+            trade_type: trade_type, account_id: account_id, symbol: symbol, shares: shares,
             price: price, state: state, timestamp: timestamp
           )
-
 
           expect(valid_trade).to be_valid
         end
@@ -30,12 +29,19 @@ describe :Trade do
       context 'When register a invalid trade' do
         context 'When trade parameters is nil' do
           it 'should be return a active record error' do
-            invalid_trade = Trade.new(user_id: nil, amount: nil)
+            invalid_trade = Trade.new(
+            trade_type: nil, account_id: nil, symbol: nil, shares: nil, price: nil, state: nil, timestamp: nil
+          )
             errors = invalid_trade.errors
 
             expect(invalid_trade).not_to be_valid
-            expect(errors[:user_id].first).to eq "can't be blank"
-            expect(errors[:amount].first).to eq "can't be blank"
+            expect(errors[:trade_type].first).to eq "can't be blank"
+            expect(errors[:account_id].first).to eq "can't be blank"
+            expect(errors[:symbol].first).to eq "can't be blank"
+            expect(errors[:shares].first).to eq "can't be blank"
+            expect(errors[:price].first).to eq "can't be blank"
+            expect(errors[:state].first).to eq "can't be blank"
+            expect(errors[:timestamp].first).to eq "can't be blank"
           end
         end
       end
