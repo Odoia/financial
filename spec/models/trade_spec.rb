@@ -11,18 +11,20 @@ describe :Trade do
       context 'When register a valid trade' do
         it 'should be return a created trade' do
           trade_type = 0
-          account_id = Faker::Number.number(digits: 10)
-          symbol = Faker::String.random(length: 4)
+          account_id = Faker::Number.number(digits: 4)
+          symbol = Faker::String.random(length: 3)
           shares = Faker::Number.number(digits: 2)
           price = Faker::Number.number(digits: 3)
           state = 1
-          timestamp = Faker::Number.number(digits: 5)
+          timestamp = Faker::Number.number(digits: 4)
           valid_trade = Trade.new(
             trade_type: trade_type, account_id: account_id, symbol: symbol, shares: shares,
             price: price, state: state, timestamp: timestamp
           )
 
           expect(valid_trade).to be_valid
+          expect(valid_trade.trade_type).to eq 'buy'
+          expect(valid_trade.state).to eq 'pending'
         end
       end
 
