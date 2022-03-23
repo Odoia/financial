@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  post 'api/v1/authenticate', to: 'authentication#authenticate'
+
+  post 'api/v1/user', to: 'user#create'
 end
