@@ -17,12 +17,22 @@ describe :BankAccount do
 
           expect(valid_bank_account).to be_valid
         end
+
+        context 'When take a user by bank account' do
+          it 'should be return a user name' do
+            user_id = user.id
+            amount = 1000
+            BankAccount.new(user_id: user_id, amount: amount).save
+
+            expect(BankAccount.first.user.name).to eq user.name
+          end
+        end
       end
 
       context 'When register a invalid bank account' do
         context 'When bank account parameters is nil' do
           it 'should be return a active record error' do
-            invalid_bank_account = User.new(user_id: nil, amount: nil)
+            invalid_bank_account = BankAccount.new(user_id: nil, amount: nil)
             errors = invalid_bank_account.errors
 
             expect(invalid_bank_account).not_to be_valid

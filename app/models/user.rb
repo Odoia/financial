@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-
+  has_many :bank_account, class_name: '::BankAccount', inverse_of: :user
 
   validates :email, :password, :name, :surname, presence: true
   validates :email, uniqueness: true
