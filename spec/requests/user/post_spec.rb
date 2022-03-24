@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe '::Api::V1::UserController', type: :request do
+describe 'UserController', type: :request do
 
   before do
     I18n.default_locale = :en
@@ -12,7 +12,7 @@ describe '::Api::V1::UserController', type: :request do
   context 'When create a user' do
     context 'When use a valid params' do
       context 'When use a POST url' do
-        let(:params) {
+        let(:params) do
           {'user': {
             email: Faker::Internet.email,
             password: '1Asdert@',
@@ -20,7 +20,7 @@ describe '::Api::V1::UserController', type: :request do
             surname: "#{Faker::Name.first_name} #{Faker::Name.last_name}"
             }
           }
-        }
+        end
 
         it 'must be return status 201' do
           expect(body['status']).to eq 201
