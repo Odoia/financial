@@ -20,7 +20,13 @@ class UserController < ApplicationController
   end
 
   def create_user
-    ::UserServices::Create.new(user_params: user_params).call
+    user = ::UserServices::Create.new(user_params: user_params).call
+    if user.id
+      bank_account_params = { 'user_id' => user.id, 'amount' => 1000.0 }
+      ::BankAccountServices::Create.new(bank_account_params: bank_account_params).call
+    end
+
+    user
   end
 
   def error_handler(errors: 'bad_request', status: 400)
