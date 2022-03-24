@@ -27,7 +27,6 @@ describe 'BankAccountController', type: :request do
 
     context 'When use a invalid params' do
       context 'When use a body without user' do
-        let(:params) { { 'name': 'user name' } }
         let(:params) { { user_id: user.id, amount: 22.0 } }
 
         it 'must be return status 400' do
@@ -54,9 +53,13 @@ describe 'BankAccountController', type: :request do
       context 'When try send a invalid_user' do
         let(:params) { { 'bank_account': { user_id: user.id+20, amount: 22.0 } } }
 
-        it 'must be return status 400' do
-          require 'pry'; binding.pry
-          expect(body['status']).to eq 400
+        it 'must be return status 404' do
+          expect(body['status']).to eq 404
+        end
+
+        it 'must be return user error' do
+          result = body['errors']['user'].first
+          expect(result).to eq 'must exist'
         end
       end
     end

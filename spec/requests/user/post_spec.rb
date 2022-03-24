@@ -29,6 +29,12 @@ describe 'UserController', type: :request do
         it 'must be return user name' do
           expect(body['data']['name']).to eq params[:user][:name]
         end
+
+        it 'must be create a bank account to user with 1000 amount' do
+          bank_account = User.find(body['data']['id']).bank_account.first
+          expect(bank_account.user_id).to eq body['data']['id']
+          expect(bank_account.amount).to eq 1000.0
+        end
       end
     end
 
