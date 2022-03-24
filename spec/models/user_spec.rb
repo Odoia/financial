@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe :User do
+  let(:user) { FactoryBot.create(:user) }
 
   before do
     I18n.default_locale = :en
