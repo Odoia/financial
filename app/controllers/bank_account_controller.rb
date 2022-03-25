@@ -11,7 +11,7 @@ class BankAccountController < ApplicationController
   end
 
   def show_all_by_user
-    result = ::BankAccount.where(user_id: params['id'])
+    result = @current_user.bank_account
     render status: 200, json: { data: result, status: 200 }
   end
 
@@ -20,11 +20,12 @@ class BankAccountController < ApplicationController
   def bank_account_params
     return error_handler if params[:bank_account].blank?
 
-    params.require(:bank_account).permit(:user_id, :amount)
+    params.require(:bank_account).permit(:amount)
   end
 
   def create_bank_account
-    ::BankAccountServices::Create.new(bank_account_params: bank_account_params).call
+    amount = bank_account_params['amount']
+    ::BankAccountServices::Create.new(user_id: @current_user.id, amount: amount).call
   end
 
   def error_handler(errors: 'bad_request', status: 400)

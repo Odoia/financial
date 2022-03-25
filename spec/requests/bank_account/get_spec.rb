@@ -4,7 +4,12 @@ describe 'BankAccountController', type: :request do
 
   before do
     I18n.default_locale = :en
-    allow_any_instance_of(ApplicationController).to receive(:authenticate_request).and_return(user)
+    allow(AuthorizeApiRequest).to receive(:call)
+      .and_wrap_original do |method, *args|
+        method.call(*args).tap do |obj|
+          expect(obj).to receive(:result).and_return(user)
+        end
+      end
   end
 
   let(:body) { JSON.parse response.body }
@@ -21,7 +26,7 @@ describe 'BankAccountController', type: :request do
         context 'When user has 1 or more bank account' do
           before do
             bank_account
-            get "/api/v1/user/#{user.id}/bank_account", headers: { 'ACCEPT' => 'application/json' }
+            get '/api/v1/bank_account', headers: { 'ACCEPT' => 'application/json' }
           end
 
           it 'must be return status 200' do
@@ -35,7 +40,7 @@ describe 'BankAccountController', type: :request do
 
         context 'When user don`t has any bank account' do
           before do
-            get "/api/v1/user/#{user.id}/bank_account", headers: { 'ACCEPT' => 'application/json' }
+            get "/api/v1/bank_account", headers: { 'ACCEPT' => 'application/json' }
           end
 
           it 'must be return status 200' do
@@ -50,7 +55,7 @@ describe 'BankAccountController', type: :request do
 
         context 'When dont pass a valid user_id' do
           before do
-            get "/api/v1/user/#{user.id + 33}/bank_account", headers: { 'ACCEPT' => 'application/json' }
+            get "/api/v1/bank_account", headers: { 'ACCEPT' => 'application/json' }
           end
 
           it 'must be return status 200' do
