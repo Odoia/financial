@@ -25,6 +25,8 @@ gem 'simple_command'
 #rack-cors
 gem 'rack-cors'
 
+gem 'redis'
+gem 'sidekiq'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

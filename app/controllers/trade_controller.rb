@@ -2,14 +2,10 @@ class TradeController < ApplicationController
   before_action :trade_params, only: [:create]
 
   def create
-    result = create_trade
-    if result[:error] || result.id.nil?
-      return error_handler(errors: result[:error], status: 400) if result[:error]
+    days = days_to_trade(trade_params[:processing_date])
+    result = ScheduleJob.set(wait: days.day).perform_later(@current_user.id, trade_params.as_json)
 
-      error_handler(errors: result.errors, status: 404)
-    else
-      render status: 201, json: { data: result, status: 201 }
-    end
+    render status: 201, json: { data: result, status: 201 }
   end
 
   private
@@ -17,7 +13,17 @@ class TradeController < ApplicationController
   def trade_params
     return error_handler if params[:trade].blank?
 
-    params.require(:trade).permit(:shares, :trade_type, :price, :account_id, :symbol, :state)
+    params.require(:trade).permit(:shares, :trade_type, :price, :account_id, :symbol, :state, :processing_date)
+  end
+
+  def days_to_trade(processing_date)
+    return 0 if processing_date.nil?
+
+    if processing_date&.to_date <= Date.today
+      return 0
+    else
+      return (processing_date.to_date - Date.today).to_i
+    end
   end
 
   def create_trade

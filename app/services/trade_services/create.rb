@@ -1,7 +1,7 @@
 module TradeServices
   class Create
     def initialize(user:, trade_params:)
-      @user = user
+      @user = User.find(user)
       @shares = trade_params['shares']
       @trade_type = trade_params['trade_type'].to_i
       @account_id = trade_params['account_id']
@@ -14,7 +14,7 @@ module TradeServices
     def call
       return { error: 'insufficient funds', status: 400 } if amount_to_save(price).negative?
 
-      result = synchronous_trade_create
+      result = trade_create
       user_update_amount
 
       result
@@ -24,7 +24,7 @@ module TradeServices
 
     attr_reader :user, :symbol, :state, :shares, :trade_type, :price, :account_id, :date_to_trade
 
-    def synchronous_trade_create
+    def trade_create
       ::Trade.new.tap do |u|
         u.shares = shares
         u.trade_type = trade_type
