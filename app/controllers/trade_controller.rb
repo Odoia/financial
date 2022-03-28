@@ -14,7 +14,7 @@ class TradeController < ApplicationController
     if result
       render status: 200, json: { data: result, status: 200 }
     else
-      error_handler(errors: result.errors, status: 404)
+      error_handler(errors:'not_found' , status: 404)
     end
   end
 
