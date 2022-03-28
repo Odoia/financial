@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   get 'api/v1/bank_account', to: 'bank_account#show_all_by_user'
   post 'api/v1/bank_account', to: 'bank_account#create'
   post 'api/v1/trades', to: 'trade#create'
+  get 'api/v1/trades/:id', to: 'trade#show'
 end

@@ -8,6 +8,16 @@ class TradeController < ApplicationController
     render status: 201, json: { data: result, status: 201 }
   end
 
+  def show 
+    result = Trade.find_by(id: params[:id])
+
+    if result
+      render status: 200, json: { data: result, status: 200 }
+    else
+      error_handler(errors: result.errors, status: 404)
+    end
+  end
+
   private
 
   def trade_params
