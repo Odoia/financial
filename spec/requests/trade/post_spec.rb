@@ -38,7 +38,7 @@ describe 'TradeController', type: :request do
               price: 22.0,
               account_id: bank_account.last,
               symbol: 'symbol',
-              state: 'done',
+              state: 'done'
             }
             }
           end
@@ -83,7 +83,7 @@ describe 'TradeController', type: :request do
               price: 2000.0,
               account_id: bank_account.last,
               symbol: 'symbol',
-              state: 'done',
+              state: 'done'
             }
             }
           end

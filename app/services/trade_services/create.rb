@@ -31,7 +31,7 @@ module TradeServices
         u.price = price
         u.account_id = account_id
         u.symbol = symbol
-        u.state = state
+        u.state = 'done'
         u.timestamp = Time.now
         u.save
       end
