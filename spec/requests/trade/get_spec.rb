@@ -14,7 +14,29 @@ describe 'TradeController', type: :request do
 
   let(:body) { JSON.parse response.body }
   let(:user) { FactoryBot.create(:user) }
-  let(:trade) { FactoryBot.create(:trade) }
+  let(:bank_account) do
+    for i in 1..5 do
+      bank_account = FactoryBot.create(:bank_account, user_id: user.id)
+      FactoryBot.create(:trade, account_id: bank_account.id)
+    end
+  end
+
+  let(:trade) { FactoryBot.create(:trade, account_id: user.id) }
+
+  context 'When show all trade by logued user' do
+    before do
+      bank_account
+      get "/api/v1/trades", headers: { 'ACCEPT' => 'application/json' }
+    end
+
+    it 'must be return a status 200' do
+      expect(body['status']).to eq 200
+    end
+
+    it 'must be return a 5 trades' do
+      expect(body['data'].count).to eq 5
+    end
+  end
 
   context 'When show a specific trade' do
     context 'When use a GET url' do
