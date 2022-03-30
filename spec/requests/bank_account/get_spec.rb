@@ -47,9 +47,9 @@ describe 'BankAccountController', type: :request do
           context 'When user request especific bank accout with trades' do
             before do
               bank_account
-              get '/api/v1/bank_account/1/trad', headers: { 'ACCEPT' => 'application/json' }
+              get '/api/v1/bank_account/1/trade', headers: { 'ACCEPT' => 'application/json' }
             end
-
+            #todo here
 
           end
         end

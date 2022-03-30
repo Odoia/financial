@@ -12,7 +12,7 @@ class TradeController < ApplicationController
     end
   end
 
-  def show 
+  def show
     result = Trade.find_by(id: params[:id])
 
     if result
@@ -23,7 +23,14 @@ class TradeController < ApplicationController
   end
 
   def show_all_by_user
+    trade_type = request.query_parameters['trade_type?']
+    return show_all_by_trade_type(trade_type) if request.query_parameters['trade_type?']
     result = Trade.where(id: @current_user.bank_account.ids)
+    render status: 200, json: { data: result, status: 200 }
+  end
+
+  def all_trades
+    result = Trade.all
     render status: 200, json: { data: result, status: 200 }
   end
 
@@ -38,6 +45,11 @@ class TradeController < ApplicationController
   private
 
   attr_reader :current_user
+
+  def show_all_by_trade_type(trade_type)
+    result = Trade.where(trade_type: trade_type)
+    render status: 200, json: { data: result, status: 200 }
+  end
 
   def trade_params
     return error_handler if params[:trade].blank?
