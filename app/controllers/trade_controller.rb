@@ -22,6 +22,11 @@ class TradeController < ApplicationController
     end
   end
 
+  def show_all_by_user
+    result = Trade.where(id: @current_user.bank_account.ids)
+    render status: 200, json: { data: result, status: 200 }
+  end
+
   private
 
   attr_reader :current_user
