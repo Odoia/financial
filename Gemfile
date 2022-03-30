@@ -22,7 +22,11 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
 # Use to authenticate users
 gem 'simple_command'
+#rack-cors
+gem 'rack-cors'
 
+gem 'redis'
+gem 'sidekiq'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

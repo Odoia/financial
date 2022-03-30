@@ -1,9 +1,8 @@
 module BankAccountServices
   class Create
-    def initialize(bank_account_params)
-      bank_account_params = bank_account_params[:bank_account_params]
-      @user_id = bank_account_params['user_id']
-      @amount = bank_account_params['amount']
+    def initialize(user_id:, amount:)
+      @user_id = user_id
+      @amount = amount
     end
 
     def call
