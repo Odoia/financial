@@ -14,4 +14,7 @@ Rails.application.routes.draw do
   post 'api/v1/trades', to: 'trade#create'
   get 'api/v1/trades/:id', to: 'trade#show'
   get 'api/v1/trades', to: 'trade#show_all_by_user'
+  delete 'api/v1/trades/:id', to: 'trade#delete'
+  put 'api/v1/trades/:id', to: 'trade#update'
+  patch 'api/v1/trades/:id', to: 'trade#update'
 end

@@ -27,6 +27,14 @@ class TradeController < ApplicationController
     render status: 200, json: { data: result, status: 200 }
   end
 
+  def delete
+    error_handler(errors: 'method not allowed', status: 405)
+  end
+
+  def update
+    error_handler(errors: 'method not allowed', status: 405)
+  end
+
   private
 
   attr_reader :current_user

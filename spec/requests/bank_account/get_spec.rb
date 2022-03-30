@@ -20,6 +20,13 @@ describe 'BankAccountController', type: :request do
     end
   end
 
+  let(:bank_account_with_trade) do
+    for i in 1..5 do
+      bank_account = FactoryBot.create(:bank_account, user_id: user.id)
+      FactoryBot.create(:trade, account_id: bank_account.id)
+    end
+  end
+
   context 'When show all bank account' do
     context 'When show all by user' do
       context 'When use a GET url' do
@@ -35,6 +42,15 @@ describe 'BankAccountController', type: :request do
 
           it 'must be return 5 bank account' do
             expect(body['data'].count).to eq 5
+          end
+
+          context 'When user request especific bank accout with trades' do
+            before do
+              bank_account
+              get '/api/v1/bank_account/1/trad', headers: { 'ACCEPT' => 'application/json' }
+            end
+
+
           end
         end
 
