@@ -10,6 +10,10 @@ class BankAccountController < ApplicationController
     end
   end
 
+  def show_all_by_user
+    result = ::BankAccount.where(user_id: params['id'])
+    render status: 200, json: { data: result, status: 200 }
+  end
 
   private
 
