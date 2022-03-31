@@ -15,6 +15,15 @@ class BankAccountController < ApplicationController
     render status: 200, json: { data: result, status: 200 }
   end
 
+  def bank_account_with_trade
+    bank_account = BankAccount.find_by(id: params['id'])
+
+    error_handler(errors: 'not found', status: 404) if bank_account.nil?
+
+    result = Trade.where(account_id: bank_account.id)
+    render status: 200, json: { data: result, status: 200 }
+  end
+
   private
 
   def bank_account_params

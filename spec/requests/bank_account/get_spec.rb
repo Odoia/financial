@@ -22,8 +22,8 @@ describe 'BankAccountController', type: :request do
 
   let(:bank_account_with_trade) do
     for i in 1..5 do
-      bank_account = FactoryBot.create(:bank_account, user_id: user.id)
-      FactoryBot.create(:trade, account_id: bank_account.id)
+      bank = FactoryBot.create(:bank_account, user_id: user.id)
+      FactoryBot.create(:trade, account_id: bank.id, symbol: 'asdew')
     end
   end
 
@@ -46,11 +46,17 @@ describe 'BankAccountController', type: :request do
 
           context 'When user request especific bank accout with trades' do
             before do
-              bank_account
-              get '/api/v1/bank_account/1/trade', headers: { 'ACCEPT' => 'application/json' }
+              bank_account_with_trade
+              get "/api/v1/bank_account/#{BankAccount.last.id}/trades", headers: { 'ACCEPT' => 'application/json' }
             end
-            #todo here
 
+            it 'must be return status 200' do
+              expect(body['status']).to eq 200
+            end
+
+            it 'must be return one trade' do
+              expect(body['data'].count).to eq 1
+            end
           end
         end
 

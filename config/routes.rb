@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   post 'api/v1/user', to: 'user#create'
   get 'api/v1/bank_account', to: 'bank_account#show_all_by_user'
+  get 'api/v1/bank_account/:id/trades', to: 'bank_account#bank_account_with_trade'
   post 'api/v1/bank_account', to: 'bank_account#create'
   post 'api/v1/trades', to: 'trade#create'
   get 'api/v1/trades/all', to: 'trade#all_trades'
