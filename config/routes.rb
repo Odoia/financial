@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   post 'api/v1/authenticate', to: 'authentication#authenticate'
+  post 'api/v1/password/forgot', to: 'password#forgot'
+  post 'api/v1/password/reset', to: 'password#reset'
 
   post 'api/v1/user', to: 'user#create'
   get 'api/v1/bank_account', to: 'bank_account#show_all_by_user'

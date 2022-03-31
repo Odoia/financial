@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20220323163605) do
+ActiveRecord::Schema.define(version: 20220330210305) do
 
   create_table "bank_accounts", force: :cascade do |t|
     t.integer "user_id"
@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 20220323163605) do
     t.boolean "is_active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
   end
 
 end
