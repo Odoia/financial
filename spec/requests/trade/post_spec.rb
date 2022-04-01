@@ -30,6 +30,29 @@ describe 'TradeController', type: :request do
   context 'When create a new trade' do
     context 'When use a valid params' do
       context 'When use a POST url' do
+        context 'When schedule a trade' do
+          let(:params) do
+            { 'trade': {
+              shares: 22,
+              trade_type: 0,
+              price: 22.0,
+              account_id: bank_account.last,
+              symbol: 'symbol',
+              state: 'done',
+              processing_date: '12/12/2022'
+            }
+            }
+          end
+
+          it 'must be return status 201' do
+            expect(body['status']).to eq 201
+          end
+
+          it 'must be return a bank account amount' do
+            expect(user.bank_account.last.amount).to eq 1000
+          end
+        end
+
         context 'When use a buy trade_type' do
           let(:params) do
             { 'trade': { 

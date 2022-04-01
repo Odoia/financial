@@ -8,6 +8,6 @@ class ScheduleJob < ApplicationJob
   private
 
   def schedule_trade(current_user, trade_params)
-    ::TradeServices::Create.new(user: current_user, trade_params: trade_params).call
+    ::TradeServices::Update.new(user: current_user, trade_params: trade_params).call
   end
 end
