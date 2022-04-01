@@ -5,10 +5,17 @@ class ApplicationController < ActionController::API
   private
 
   def authenticate_request
-
-    unless request['action'] == 'create' && request['controller'] == 'user'
+    unless action.include?(request['action']) && controller.include?(request['controller'])
       @current_user = AuthorizeApiRequest.call(request.headers).result
       render json: { error: 'Not Authorized' }, status: 401 unless @current_user
     end
+  end
+
+  def action
+    %w[create forgot reset]
+  end
+
+  def controller
+    %w[user password]
   end
 end
