@@ -14,10 +14,12 @@ describe 'TradeController', type: :request do
 
   let(:body) { JSON.parse response.body }
   let(:user) { FactoryBot.create(:user) }
+  let(:trade) { FactoryBot.create(:trade_with_job_token) }
 
   context 'When put a trade' do
     before do
-      put '/api/v1/trades/1', headers: { 'ACCEPT' => 'application/json' }
+      trade
+      put "/api/v1/trades/#{trade.id}", headers: { 'ACCEPT' => 'application/json' }
     end
 
     it 'must be return a status 405' do
@@ -29,7 +31,7 @@ describe 'TradeController', type: :request do
     end
   end
 
-  context 'When patch a trade' do
+  xcontext 'When patch a trade' do
     before do
       patch '/api/v1/trades/1', headers: { 'ACCEPT' => 'application/json' }
     end

@@ -6,6 +6,7 @@ class TradeController < ApplicationController
   def create
     if funds?
       result = schedule_trade
+
       render status: 201, json: { data: result, status: 201 }
     else
       error_handler
@@ -18,7 +19,7 @@ class TradeController < ApplicationController
     if result
       render status: 200, json: { data: result, status: 200 }
     else
-      error_handler(errors:'not_found' , status: 404)
+      error_handler(errors: 'not_found' , status: 404)
     end
   end
 
@@ -40,11 +41,17 @@ class TradeController < ApplicationController
   end
 
   def update
-    result = tradeTrade.find_by(id: params['id'])
+    result = Trade.find_by(id: params['id'])
 
-    return 'not permit' if result.job_token.nil?
-#todo here
-    error_handler(errors: 'method not allowed', status: 405)
+    return 'not permit' if result&.job_token.nil?
+
+    schedule = ::Sidekiq::ScheduledSet.new
+    job_to_delete = schedule.select { |job| job.item['args'].first['job_id'] == result.job_token }
+    job_to_delete.each(&:delete)
+
+    schedule_result = schedule_trade
+
+    render status: 200, json: { data: schedule_result, status: 200 }
   end
 
   private
