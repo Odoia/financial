@@ -54,6 +54,10 @@ class TradeController < ApplicationController
     render status: 200, json: { data: schedule_result, status: 200 }
   end
 
+  def patch
+    error_handler(errors: 'method not allowed', status: 405)
+  end
+
   private
 
   attr_reader :current_user
@@ -104,7 +108,10 @@ class TradeController < ApplicationController
   def funds?
     return true if trade_params[:trade_type] == '1'
 
-    result = (current_bank_account.amount - trade_params[:price].to_f)
+    bank_account = current_bank_account
+    return false if bank_account.nil?
+
+    result = (bank_account.amount - trade_params[:price].to_f)
 
     return false if result.negative?
 

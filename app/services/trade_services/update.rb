@@ -39,6 +39,7 @@ module TradeServices
     end
 
     def user_update_amount
+      require 'pry'; binding.pry
       current_user_bank_account.amount = amount_to_save(price)
       current_user_bank_account.save
     end
