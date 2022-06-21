@@ -1,5 +1,5 @@
 module TradeServices
-  class Create
+  class Update
     def initialize(user:, trade_params:)
       @user = User.find(user)
       @shares = trade_params['shares']
@@ -9,21 +9,20 @@ module TradeServices
       @state = trade_params['state']
       @date_to_trade = trade_params['date_to_trade'] || nil
       @price = trade_params['price'].to_f
-      @job_token = trade_params['job_token'] || nil
     end
 
     def call
       return { error: 'insufficient funds', status: 400 } if amount_to_save(price).negative?
 
       result = trade_create
-      user_update_amount if job_token.nil?
+      user_update_amount
 
       result
     end
 
     private
 
-    attr_reader :user, :symbol, :state, :shares, :trade_type, :price, :account_id, :date_to_trade, :job_token
+    attr_reader :user, :symbol, :state, :shares, :trade_type, :price, :account_id, :date_to_trade
 
     def trade_create
       ::Trade.new.tap do |u|
@@ -32,14 +31,15 @@ module TradeServices
         u.price = price
         u.account_id = account_id
         u.symbol = symbol
-        u.state = state
+        u.state = state == 'pending' ? 'done' : 'canceled'
         u.timestamp = Time.now
-        u.job_token = job_token
+        u.job_token = nil
         u.save
       end
     end
 
     def user_update_amount
+      require 'pry'; binding.pry
       current_user_bank_account.amount = amount_to_save(price)
       current_user_bank_account.save
     end
